@@ -1,2 +1,0 @@
-# calendario
-Projeto dev eficiente
