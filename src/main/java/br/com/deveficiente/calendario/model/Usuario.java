@@ -2,10 +2,8 @@ package br.com.deveficiente.calendario.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -15,13 +13,16 @@ public class Usuario {
     private Long id;
     private String login;
     private String senha;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataCadastro;
 
     public Usuario(){
 
     }
 
-    public Usuario(String login, String senha) {
+    public Usuario(String login, String senha, Date dataCadastro) {
         this.login = login;
         this.senha = senha;
+        this.dataCadastro = dataCadastro;
     }
 }

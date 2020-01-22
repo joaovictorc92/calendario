@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 public class UsuarioForm {
@@ -19,6 +20,6 @@ public class UsuarioForm {
 
     public Usuario converter(){
         String senhaCriptografada = DigestUtils.md5Hex(senha.getBytes()).toUpperCase();
-        return new Usuario(login, senhaCriptografada);
+        return new Usuario(login, senhaCriptografada, new Date());
     }
 }
