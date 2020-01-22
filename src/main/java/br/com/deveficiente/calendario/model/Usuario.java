@@ -3,7 +3,8 @@ package br.com.deveficiente.calendario.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -12,17 +13,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
+    @Pattern(regexp = "^[a-fA-F0-9]{32}$", message = "A senha deve ser criptografada em MD5")
     private String senha;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataCadastro;
+    private LocalDateTime dataCadastro;
 
-    public Usuario(){
 
-    }
-
-    public Usuario(String login, String senha, Date dataCadastro) {
+    public Usuario(String login, String senha) {
         this.login = login;
         this.senha = senha;
-        this.dataCadastro = dataCadastro;
+        this.dataCadastro = LocalDateTime.now();
     }
 }
