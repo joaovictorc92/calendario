@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import java.security.MessageDigest;
 import java.util.Date;
 
-@Data
 public class UsuarioForm {
 
     @NotNull @NotEmpty @Email(message = "O login deve ser um email válido")
@@ -23,5 +22,21 @@ public class UsuarioForm {
     public Usuario converter(){
         String senhaCriptografada = DigestUtils.md5Hex(senha.getBytes()).toUpperCase();
         return new Usuario(login, senhaCriptografada);
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

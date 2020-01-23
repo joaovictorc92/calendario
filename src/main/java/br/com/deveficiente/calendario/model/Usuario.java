@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 public class Usuario {
     @Id
@@ -22,5 +21,37 @@ public class Usuario {
         this.login = login;
         this.senha = senha;
         this.dataCadastro = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 }
