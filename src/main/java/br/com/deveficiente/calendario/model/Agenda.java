@@ -1,6 +1,10 @@
 package br.com.deveficiente.calendario.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Agenda {
@@ -8,14 +12,18 @@ public class Agenda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @NotNull
+    @NotEmpty
+    @Length(max = 255, message = "A descrição deve ter no máximo 255 caracteres")
     private String descricao;
+    @NotNull
     @ManyToOne
-    private Pessoa pessoa;
+    private Usuario usuario;
 
-    public Agenda(String descricao, Pessoa pessoa) {
-        this.nome = pessoa.getNome();
+    public Agenda(String nome, String descricao, Usuario usuario) {
+        this.nome = usuario.getNome();
         this.descricao = descricao;
-        this.pessoa = pessoa;
+        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -42,11 +50,11 @@ public class Agenda {
         this.descricao = descricao;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
