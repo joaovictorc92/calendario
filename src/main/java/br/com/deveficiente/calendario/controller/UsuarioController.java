@@ -29,7 +29,7 @@ public class UsuarioController {
     public ResponseEntity cadastrar(@RequestBody @Valid UsuarioForm usuarioForm) {
         Usuario usuario = usuarioForm.converter();
         usuario = usuarioRepository.save(usuario);
-        Agenda agenda = new Agenda(usuario.getNome(), "Agenda "+ usuario.getNome(), usuario);
+        Agenda agenda = new Agenda(usuario);
         agendaRepository.save(agenda);
         return ResponseEntity.ok("Usuário  cadastrado");
 
