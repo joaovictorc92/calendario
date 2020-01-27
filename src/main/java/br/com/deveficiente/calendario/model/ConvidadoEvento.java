@@ -11,4 +11,12 @@ public class ConvidadoEvento {
     private Evento evento;
     @ManyToOne
     private Usuario convidado;
+
+    public void setEvento(Evento evento) {
+        this.evento = evento;
+    }
+
+    public void setConvidado(Usuario convidado) {
+        this.convidado = convidado;
+    }
 }

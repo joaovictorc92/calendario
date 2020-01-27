@@ -18,5 +18,12 @@ public class Evento {
     @ManyToOne
     private Usuario usuarioCriadorEvento;
 
-
+    public Evento(String titulo, LocalDateTime inicio, LocalDateTime fim, String descricao, Agenda agenda, Usuario usuarioCriadorEvento) {
+        this.titulo = titulo;
+        this.inicio = inicio;
+        this.fim = fim;
+        this.descricao = descricao;
+        this.agenda = agenda;
+        this.usuarioCriadorEvento = usuarioCriadorEvento;
+    }
 }
