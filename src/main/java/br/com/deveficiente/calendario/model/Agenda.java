@@ -20,6 +20,9 @@ public class Agenda {
     @ManyToOne
     private Usuario usuario;
 
+    public Agenda() {
+    }
+
     public Agenda(Usuario usuario) {
         this.nome = usuario.getNome();
         this.descricao = "Agenda "+ usuario.getNome();
