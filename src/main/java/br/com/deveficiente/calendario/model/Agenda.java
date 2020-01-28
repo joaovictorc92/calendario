@@ -20,6 +20,7 @@ public class Agenda {
     @ManyToOne
     private Usuario usuario;
 
+    @Deprecated
     public Agenda() {
     }
 

@@ -9,9 +9,11 @@ import br.com.deveficiente.calendario.repository.AgendaRepository;
 import br.com.deveficiente.calendario.repository.ConvidadoEventoRepository;
 import br.com.deveficiente.calendario.repository.EventoRepository;
 import br.com.deveficiente.calendario.repository.UsuarioRepository;
+import br.com.deveficiente.calendario.service.EventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +33,7 @@ public class EventoController {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private EventoRepository eventoRepository;
+    private EventoService eventoService;
     @Autowired
     private AgendaRepository agendaRepository;
     @Autowired
@@ -39,32 +41,19 @@ public class EventoController {
     private String message;
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody @Valid EventoForm eventoForm){
+    public ResponseEntity cadastrar(@AuthenticationPrincipal Usuario usuario, @RequestBody @Valid EventoForm eventoForm){
         if(validaData(eventoForm) && todosConvidadosCadastrados(eventoForm.getConvidados())){
-            Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Agenda agenda = agendaRepository.findById(eventoForm.getCodAgenda()).get();
-            Evento evento = eventoForm.converter(agenda, usuario);
-            evento = eventoRepository.save(evento);
-
-            for(Usuario u: usuariosConvidados){
-                ConvidadoEvento convidadoEvento = new ConvidadoEvento();
-                convidadoEvento.setConvidado(u);
-                convidadoEvento.setEvento(evento);
-                convidadoEventoRepository.save(convidadoEvento);
-
-            }
+            eventoService.salvarEvento(usuario, eventoForm, usuariosConvidados);
             return ResponseEntity.ok("Evento cadastrado com sucesso");
-
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
     }
 
-    //GOSTARIA DE SUGESTÕES PARA MELHORAR A ORGANIZAÇÃO DESSA VALIDAÇÃO
     private boolean validaData(@Valid EventoForm eventoForm) {
-        message = !eventoForm.validaFimDepoisdoInicio()?"Fim deve ser depois do início":"";
+        message = !eventoForm.validaFimDepoisdoInicio()? "Fim deve ser depois do início":"";
         return eventoForm.validaFimDepoisdoInicio();
     }
-    //GOSTARIA DE SUGESTÕES PARA MELHORAR A ORGANIZAÇÃO DESSA VALIDAÇÃO TAMBEM
+
     private boolean todosConvidadosCadastrados(List<String> convidados) {
         usuariosConvidados = new ArrayList<>();
         for(String c : convidados){
