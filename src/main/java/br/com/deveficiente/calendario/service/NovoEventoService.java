@@ -7,15 +7,15 @@ import br.com.deveficiente.calendario.model.Usuario;
 import br.com.deveficiente.calendario.repository.AgendaRepository;
 import br.com.deveficiente.calendario.repository.ConvidadoEventoRepository;
 import br.com.deveficiente.calendario.repository.EventoRepository;
+import br.com.deveficiente.calendario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Service
-public class EventoService {
+public class NovoEventoService {
 
     @Autowired
     EventoRepository eventoRepository;
@@ -23,13 +23,16 @@ public class EventoService {
     ConvidadoEventoRepository convidadoEventoRepository;
     @Autowired
     AgendaRepository agendaRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
-    public void salvarEvento(Usuario usuario, @RequestBody @Valid EventoForm eventoForm, List<Usuario> convidados) {
+    public void executa(Usuario usuario, @RequestBody @Valid EventoForm eventoForm) {
         Evento evento = eventoForm.converter(agendaRepository, usuario);
         evento = eventoRepository.save(evento);
 
-        for(Usuario u: convidados){
-            ConvidadoEvento convidadoEvento = new ConvidadoEvento(evento,u);
+        for(String u: eventoForm.getConvidados()){
+            Usuario convidado = usuarioRepository.findByLogin(u).get();
+            ConvidadoEvento convidadoEvento = new ConvidadoEvento(evento,convidado);
             convidadoEventoRepository.save(convidadoEvento);
 
         }
