@@ -1,20 +1,27 @@
 package br.com.deveficiente.calendario.model;
 
-import br.com.deveficiente.calendario.model.enums.TipoNotificacaoEnum;
-import br.com.deveficiente.calendario.model.enums.UnidadeTempoEnum;
+import br.com.deveficiente.calendario.model.enums.TipoNotificacao;
+import br.com.deveficiente.calendario.model.enums.UnidadeTempo;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Notificacao {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private TipoNotificacaoEnum tipoNotificacao;
+    private TipoNotificacao tipoNotificacao;
     private Integer quantidadeTempo;
     @Enumerated(EnumType.STRING)
-    private UnidadeTempoEnum unidadeTempoEnum;
+    private UnidadeTempo unidadeTempo;
+    @ManyToOne
+    private Evento evento;
+
+    public Notificacao(TipoNotificacao tipoNotificacao, Integer quantidadeTempo, UnidadeTempo unidadeTempo, Evento evento) {
+        this.tipoNotificacao = tipoNotificacao;
+        this.quantidadeTempo = quantidadeTempo;
+        this.unidadeTempo = unidadeTempo;
+        this.evento = evento;
+    }
 }

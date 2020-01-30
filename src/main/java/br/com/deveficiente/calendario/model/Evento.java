@@ -18,6 +18,11 @@ public class Evento {
     @ManyToOne
     private Usuario usuarioCriadorEvento;
 
+    @Deprecated
+    public Evento() {
+
+    }
+
     public Evento(String titulo, LocalDateTime inicio, LocalDateTime fim, String descricao, Agenda agenda, Usuario usuarioCriadorEvento) {
         this.titulo = titulo;
         this.inicio = inicio;
