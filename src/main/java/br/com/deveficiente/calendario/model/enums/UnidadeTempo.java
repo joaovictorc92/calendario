@@ -5,13 +5,4 @@ public enum UnidadeTempo {
     HORAS,
     DIAS,
     SEMANAS;
-
-    public static boolean contains(String value){
-        for(UnidadeTempo u : values()){
-            if(u.name().equals(value)){
-                return true;
-            }
-        }
-        return false;
-    }
 }
