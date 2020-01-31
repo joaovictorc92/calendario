@@ -2,7 +2,10 @@ package br.com.deveficiente.calendario.controller.form;
 
 import br.com.deveficiente.calendario.model.Agenda;
 import br.com.deveficiente.calendario.model.Evento;
+import br.com.deveficiente.calendario.model.Notificacao;
 import br.com.deveficiente.calendario.model.Usuario;
+import br.com.deveficiente.calendario.model.enums.TipoNotificacao;
+import br.com.deveficiente.calendario.model.enums.UnidadeTempo;
 import br.com.deveficiente.calendario.repository.AgendaRepository;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,9 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventoForm implements Serializable {
-    @NotNull @NotEmpty @Length(max = 100, message = "O título não pode ultrapassar 100 caracteres")
+    @NotNull
+    @NotEmpty
+    @Length(max = 100, message = "O título não pode ultrapassar 100 caracteres")
     private String titulo;
-    @NotNull @NotNull @Length(max = 255, message = "O título não pode ultrapassar 255 caracteres")
+    @NotNull
+    @NotNull
+    @Length(max = 255, message = "O título não pode ultrapassar 255 caracteres")
     private String descricao;
     @Future
     private LocalDateTime inicio;
@@ -26,8 +33,11 @@ public class EventoForm implements Serializable {
     private LocalDateTime fim;
 
     private Long codAgenda;
-    @NotNull @NotEmpty(message = "Adicione pelo menos um convidado para criar o evento")
+    @NotNull
+    @NotEmpty(message = "Adicione pelo menos um convidado para criar o evento")
     private List<@Email String> convidados = new ArrayList<>();
+
+    private List<NotificacaoForm> notificacoes;
 
     private AgendaRepository agendaRepository;
 
@@ -79,14 +89,30 @@ public class EventoForm implements Serializable {
         this.codAgenda = codAgenda;
     }
 
-    public boolean validaFimDepoisdoInicio(){
+    public boolean validaFimDepoisdoInicio() {
         return fim.isAfter(inicio);
     }
 
-    public Evento converter(AgendaRepository agendaRepository, Usuario usuario){
+    public List<NotificacaoForm> getNotificacoes() {
+        return notificacoes;
+    }
+
+    public void setNotificacoes(List<NotificacaoForm> notificacoes) {
+        this.notificacoes = notificacoes;
+    }
+
+    public Evento converter(AgendaRepository agendaRepository, Usuario usuario) {
         Agenda agenda = agendaRepository.findById(codAgenda).get();
         return new Evento(titulo, inicio, fim, descricao, agenda, usuario);
     }
 
-
+    public List<Notificacao> getNotificacoesParaSalvar(Evento evento) {
+        List<Notificacao> retorno = new ArrayList<>();
+        for (NotificacaoForm n : notificacoes) {
+            retorno.add(new Notificacao(TipoNotificacao.valueOf(n.getTipoNotificacao()),
+                    n.getQuantidadeTempo(),
+                    UnidadeTempo.valueOf(n.getUnidadeTempo()), evento));
+        }
+        return retorno;
+    }
 }
