@@ -27,20 +27,18 @@ public class NovoEventoService {
         Evento evento = eventoForm.converter(agendaRepository, usuario);
         evento = eventoRepository.save(evento);
 
-        for(String u: eventoForm.getConvidados()){
+        for (String u : eventoForm.getConvidados()) {
             Usuario convidado = usuarioRepository.findByLogin(u).get();
-            ConvidadoEvento convidadoEvento = new ConvidadoEvento(evento,convidado);
+            ConvidadoEvento convidadoEvento = new ConvidadoEvento(evento, convidado);
             convidadoEventoRepository.save(convidadoEvento);
 
         }
-        salvarNotificacoes(eventoForm,evento);
+        salvarNotificacoes(eventoForm, evento);
     }
 
     private void salvarNotificacoes(EventoForm eventoForm, Evento evento) {
-        if(eventoForm.getNotificacoes() != null){
-            for(Notificacao notificacao : eventoForm.getNotificacoesParaSalvar(evento)){
-                notificacaoRepository.save(notificacao);
-            }
+        for (Notificacao notificacao : eventoForm.getNotificacoesParaSalvar(evento)) {
+            notificacaoRepository.save(notificacao);
         }
     }
 

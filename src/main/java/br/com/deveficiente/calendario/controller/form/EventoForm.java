@@ -4,8 +4,6 @@ import br.com.deveficiente.calendario.model.Agenda;
 import br.com.deveficiente.calendario.model.Evento;
 import br.com.deveficiente.calendario.model.Notificacao;
 import br.com.deveficiente.calendario.model.Usuario;
-import br.com.deveficiente.calendario.model.enums.TipoNotificacao;
-import br.com.deveficiente.calendario.model.enums.UnidadeTempo;
 import br.com.deveficiente.calendario.repository.AgendaRepository;
 import org.hibernate.validator.constraints.Length;
 
@@ -33,11 +31,11 @@ public class EventoForm implements Serializable {
     private LocalDateTime fim;
 
     private Long codAgenda;
-    @NotNull
+
     @NotEmpty(message = "Adicione pelo menos um convidado para criar o evento")
     private List<@Email String> convidados = new ArrayList<>();
 
-    private List<NotificacaoForm> notificacoes;
+    private List<NotificacaoForm> notificacoes = new ArrayList<>();
 
     private AgendaRepository agendaRepository;
 
@@ -109,9 +107,9 @@ public class EventoForm implements Serializable {
     public List<Notificacao> getNotificacoesParaSalvar(Evento evento) {
         List<Notificacao> retorno = new ArrayList<>();
         for (NotificacaoForm n : notificacoes) {
-            retorno.add(new Notificacao(TipoNotificacao.valueOf(n.getTipoNotificacao()),
+            retorno.add(new Notificacao(n.getTipoNotificacao(),
                     n.getQuantidadeTempo(),
-                    UnidadeTempo.valueOf(n.getUnidadeTempo()), evento));
+                    n.getUnidadeTempo(), evento));
         }
         return retorno;
     }

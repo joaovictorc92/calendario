@@ -1,22 +1,24 @@
 package br.com.deveficiente.calendario.controller.form;
 
-import javax.validation.constraints.NotEmpty;
+import br.com.deveficiente.calendario.model.enums.TipoNotificacao;
+import br.com.deveficiente.calendario.model.enums.UnidadeTempo;
+
 import javax.validation.constraints.NotNull;
 
 public class NotificacaoForm {
 
-    @NotEmpty(message = "Informe o tipo de notificação")
-    private String tipoNotificacao;
+    @NotNull
+    private TipoNotificacao tipoNotificacao;
     @NotNull
     private Integer quantidadeTempo;
-    @NotEmpty(message = "Informe a unidade de tempo")
-    private String unidadeTempo;
+    @NotNull
+    private UnidadeTempo unidadeTempo;
 
-    public String getTipoNotificacao() {
+    public TipoNotificacao getTipoNotificacao() {
         return tipoNotificacao;
     }
 
-    public void setTipoNotificacao(String tipoNotificacao) {
+    public void setTipoNotificacao(TipoNotificacao tipoNotificacao) {
         this.tipoNotificacao = tipoNotificacao;
     }
 
@@ -28,11 +30,11 @@ public class NotificacaoForm {
         this.quantidadeTempo = quantidadeTempo;
     }
 
-    public String getUnidadeTempo() {
+    public UnidadeTempo getUnidadeTempo() {
         return unidadeTempo;
     }
 
-    public void setUnidadeTempo(String unidadeTempo) {
+    public void setUnidadeTempo(UnidadeTempo unidadeTempo) {
         this.unidadeTempo = unidadeTempo;
     }
 }
