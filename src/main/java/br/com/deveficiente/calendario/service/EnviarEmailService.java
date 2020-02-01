@@ -12,7 +12,7 @@ public class EnviarEmailService {
     @Async
     public void enviar(List<ConvidadoEvento> convidadosEvento){
         for(ConvidadoEvento c : convidadosEvento){
-            System.out.println("ENVIAR EMAIL");
+            System.out.println("http://localhost:8080/aceitar/"+c.getId());
         }
     }
 }
