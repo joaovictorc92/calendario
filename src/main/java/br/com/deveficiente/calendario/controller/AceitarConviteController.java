@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/aceitar")
 public class AceitarConviteController {
@@ -15,6 +17,7 @@ public class AceitarConviteController {
     @Autowired
     private AceitaConviteService aceitaConviteService;
 
+    @Transactional
     @GetMapping("/{convidadoEvento}")
     public ResponseEntity aceitarConvite(@PathVariable("convidadoEvento") Long codconvidadoEvento){
         return aceitaConviteService.executa(codconvidadoEvento);

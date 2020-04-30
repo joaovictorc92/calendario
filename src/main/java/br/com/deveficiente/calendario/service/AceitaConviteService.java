@@ -18,16 +18,21 @@ public class AceitaConviteService {
     @Autowired
     private EventoRepository eventoRepository;
 
-    public ResponseEntity executa(Long codConvidadoEvento){
+    public ResponseEntity executa(Long codConvidadoEvento) {
         ConvidadoEvento convidadoEvento = convidadoEventoRepository.findById(codConvidadoEvento).get();
-        if(LocalDateTime.now().isAfter(convidadoEvento.getEvento().getInicio())){
+        if (convidadoEvento.getEvento().passouDoHorario()) {
             return ResponseEntity.notFound().build();
         }
-        //AQUI PRECISEI VERIFICAR NULO PARA SABER SE ELE JA ACEITOU CONVITE, GOSTARIA DE SUGESTÕES
-        if(convidadoEvento.getDataAceitaConvite() == null) {
-            convidadoEvento.setDataAceitaConvite(LocalDateTime.now());
-            convidadoEventoRepository.save(convidadoEvento);
-            Evento evento = new Evento(convidadoEvento);
+        if (!convidadoEvento.jaAceitouConvite()) {
+            convidadoEvento.aceitarConvite();
+            //convidadoEventoRepository.save(convidadoEvento);
+            Evento evento = new Evento(convidadoEvento.getEvento().getTitulo(),
+                    convidadoEvento.getEvento().getInicio(),
+                    convidadoEvento.getEvento().getFim(),
+                    convidadoEvento.getEvento().getDescricao(),
+                    convidadoEvento.getEvento().getAgenda(),
+                    convidadoEvento.getConvidado()
+            );
             eventoRepository.save(evento);
         }
         return ResponseEntity.ok().build();

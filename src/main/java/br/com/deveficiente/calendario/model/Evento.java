@@ -32,15 +32,6 @@ public class Evento {
         this.usuarioCriadorEvento = usuarioCriadorEvento;
     }
 
-    public Evento(ConvidadoEvento convidadoEvento) {
-        this.agenda = convidadoEvento.getEvento().getAgenda();
-        this.titulo = convidadoEvento.getEvento().getTitulo();
-        this.descricao = convidadoEvento.getEvento().getDescricao();
-        this.inicio = convidadoEvento.getEvento().getInicio();
-        this.fim = convidadoEvento.getEvento().getFim();
-        this.usuarioCriadorEvento = convidadoEvento.getConvidado();
-    }
-
     public Agenda getAgenda() {
         return agenda;
     }
@@ -59,5 +50,10 @@ public class Evento {
 
     public String getDescricao() {
         return descricao;
+    }
+
+
+    public boolean passouDoHorario() {
+      return LocalDateTime.now().isAfter(this.inicio);
     }
 }

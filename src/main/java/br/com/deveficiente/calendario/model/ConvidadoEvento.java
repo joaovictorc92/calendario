@@ -2,6 +2,7 @@ package br.com.deveficiente.calendario.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 public class ConvidadoEvento {
@@ -27,8 +28,12 @@ public class ConvidadoEvento {
         this.dataAceitaConvite = dataAceitaConvite;
     }
 
-    public LocalDateTime getDataAceitaConvite() {
-        return dataAceitaConvite;
+    public Boolean jaAceitouConvite() {
+        return Optional.ofNullable(dataAceitaConvite).isPresent();
+    }
+
+    public void aceitarConvite(){
+        this.dataAceitaConvite = LocalDateTime.now();
     }
 
     public Evento getEvento() {
